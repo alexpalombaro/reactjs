@@ -1,5 +1,5 @@
 import './${name}.less';
-import React, { PropTypes } from 'react';
+import React from 'react';  // eslint-disable-line no-unused-vars
 
 class ${name} {
 
@@ -12,11 +12,12 @@ class ${name} {
     componentWillUnmount() {
     }
 
-    shouldComponentUpdate(nextProps) {
+    shouldComponentUpdate() {
     }
 
     render() {
         return (
+            <p>Hello ${name} component</p>
         );
     }
 }

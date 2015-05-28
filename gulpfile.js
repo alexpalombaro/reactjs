@@ -210,4 +210,4 @@ gulp.task('pagespeed', function (cb) {
 
 
 // External Tasks
-require('./gulp_tasks/add_component')(gulp);
+require('./gulp_tasks/add-component')(gulp);
