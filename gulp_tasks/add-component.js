@@ -14,9 +14,10 @@ module.exports = function (gulp) {
         gulp.src(path.join('gulp_tasks', templateDir, 'components/*'))
             .pipe(replace(/\$\{name}/g, name))
             .pipe(rename(function (path) {
-                path.extname = '';
-                path.basename = path.basename.replace(/^\w+/, name);
-                console.log(path);
+                if (path.extname === '.tmp') {
+                    path.extname = '';
+                    path.basename = path.basename.replace(/^\w+/, name);
+                }
             }))
             .pipe(gulp.dest('./src/components/' + name));
 

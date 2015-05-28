@@ -14,6 +14,7 @@ import AppStore from '../../stores/AppStore';
 import Navbar from '../Navbar';
 import ContentPage from '../ContentPage';
 import NotFoundPage from '../NotFoundPage';
+import Header from '../Header';
 import setViewport from './setViewport';
 
 class App {
@@ -54,6 +55,7 @@ class App {
         return (
             <div className="App">
                 <Navbar />
+                <Header />
                 <ContentPage className="container" {...page} />
 
                 <div className="navbar-footer">
