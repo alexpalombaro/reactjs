@@ -1,0 +1,24 @@
+import './${name}.less';
+import React, { PropTypes } from 'react';
+
+class ${name} {
+
+    static propTypes = {
+    };
+
+    componentDidMount() {
+    }
+
+    componentWillUnmount() {
+    }
+
+    shouldComponentUpdate(nextProps) {
+    }
+
+    render() {
+        return (
+        );
+    }
+}
+
+export default ${name};

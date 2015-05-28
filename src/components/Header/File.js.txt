@@ -1,0 +1,24 @@
+import './Header.less';
+import React, { PropTypes } from 'react';
+
+class Header {
+
+    static propTypes = {
+    };
+
+    componentDidMount() {
+    }
+
+    componentWillUnmount() {
+    }
+
+    shouldComponentUpdate(nextProps) {
+    }
+
+    render() {
+        return (
+        );
+    }
+}
+
+export default Header;
