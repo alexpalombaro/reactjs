@@ -24,7 +24,7 @@ module.exports = function (gulp) {
         cb();
     }
 
-    gulp.task('add-component', function (cb) {
+    gulp.task('component', function (cb) {
 
         var fs = require('fs');
         var prompt = require('prompt');
