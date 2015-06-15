@@ -26,6 +26,7 @@
     ],
     "no-shadow": false,
     "no-empty": false,
-    "no-underscore-dangle": false
+    "no-underscore-dangle": false,
+    "react/jsx-uses-react": 1
   }
 }

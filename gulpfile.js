@@ -46,9 +46,17 @@ gulp.task('clean', del.bind(
 ));
 
 // 3rd party libraries
-gulp.task('vendor', function () {
-    return gulp.src('node_modules/bootstrap/dist/fonts/**')
-        .pipe(gulp.dest('build/fonts'));
+gulp.task('vendor-font', function () {
+    return gulp.src('node_modules/materialize-css/font/**')
+        .pipe(gulp.dest('build/font'));
+});
+
+gulp.task('vendor-js', function () {
+    return gulp.src(['node_modules/materialize-css/bin/materialize.js', 'node_modules/jquery/dist/jquery.min.js'])
+        .pipe(gulp.dest('build/js'));
+});
+
+gulp.task('vendor', ['vendor-font', 'vendor-js'], function () {
 });
 
 // Static files
@@ -66,13 +74,10 @@ gulp.task('assets', function () {
 
 // CSS style sheets
 gulp.task('styles', function () {
-    src.styles = 'src/styles/**/*.{css,less}';
-    return gulp.src('src/styles/bootstrap.less')
+    src.styles = 'src/styles/**/*.{css,scss}';
+    return gulp.src('src/styles/materialize.scss')
         .pipe($.plumber())
-        .pipe($.less({
-            sourceMap: !RELEASE,
-            sourceMapBasepath: __dirname
-        }))
+        .pipe($.sass())
         .on('error', console.error.bind(console))
         .pipe($.autoprefixer({browsers: AUTOPREFIXER_BROWSERS}))
         .pipe($.csscomb())

@@ -6,7 +6,7 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-//import './NotFoundPage.less';
+import './NotFoundPage.scss';
 import React from 'react'; // eslint-disable-line no-unused-vars
 
 class NotFoundPage {

@@ -6,7 +6,7 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import './HomePage.less';
+import './HomePage.scss';
 import React, { PropTypes } from 'react';
 
 class HomePage {
