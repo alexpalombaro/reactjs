@@ -34,7 +34,7 @@ function run() {
     };
 
     Router.run(routes, Router.HistoryLocation, (Root) => {
-        React.render(<Root {...props}/>, document.getElementById('App'));
+        React.render(<Root {...props}/>, document.getElementById('AppContainer'));
     });
 }
 

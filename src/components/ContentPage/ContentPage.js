@@ -11,8 +11,7 @@ class ContentPage {
         var { className, body, other } = this.props;
 
         return (
-            <div className={'ContentPage ' + className}
-                 dangerouslySetInnerHTML={{__html: body}} {...other} />
+            <div className={'ContentPage ' + className} dangerouslySetInnerHTML={{__html: body}} {...other} />
         );
     }
 
