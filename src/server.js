@@ -12,7 +12,6 @@ import path from 'path';
 import express from 'express';
 import React from 'react';
 import Router from 'react-router';
-
 import Dispatcher from './core/Dispatcher';
 import ActionTypes from './constants/ActionTypes';
 import AppStore from './stores/AppStore';
@@ -37,14 +36,13 @@ server.get('/api/page/*', function (req, res) {
 // -----------------------------------------------------------------------------
 
 // The top-level React component + HTML template for it
-//var App = React.createFactory(require('./components/App'));
 var templateFile = path.join(__dirname, 'templates/index.html');
 var template = _.template(fs.readFileSync(templateFile, 'utf8'));
 
 server.get('*', function (req, res) {
     var data = {
         description: '',
-        title: 'Undefined',
+        title: 'React Testing',
         path: req.path,
         onSetTitle: function (title) {
             data.title = title;
