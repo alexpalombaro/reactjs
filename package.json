@@ -22,6 +22,7 @@
     "materialize-css": "git://github.com/dogfalo/materialize.git",
     "prompt": "^0.2.14",
     "react": "0.13.1",
+    "react-router": "^0.13.3",
     "superagent": "1.2.0"
   },
   "devDependencies": {

@@ -8,8 +8,12 @@
 
 import React, { Component } from 'react'; // eslint-disable-line no-unused-vars
 import { canUseDOM } from 'react/lib/ExecutionEnvironment';
+import Router from 'react-router';
+
+import routes from '../../routes';
 
 function setViewport(ComposedComponent) {
+
     return class AppViewport extends Component {
 
         constructor() {

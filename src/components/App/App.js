@@ -8,13 +8,10 @@
 
 import './App.scss';
 import React, { PropTypes } from 'react';
+import { RouteHandler, Link } from 'react-router';
 import invariant from 'react/lib/invariant';
-import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
-import Navbar from '../Navbar';
-import ContentPage from '../ContentPage';
 import NotFoundPage from '../NotFoundPage';
-import Header from '../Header';
 import setViewport from './setViewport';
 
 class App {
@@ -28,13 +25,9 @@ class App {
     };
 
     componentDidMount() {
-        window.addEventListener('popstate', this.handlePopState);
-        window.addEventListener('click', this.handleClick);
     }
 
     componentWillUnmount() {
-        window.removeEventListener('popstate', this.handlePopState);
-        window.removeEventListener('click', this.handleClick);
     }
 
     shouldComponentUpdate(nextProps) {
@@ -51,85 +44,18 @@ class App {
             this.props.onPageNotFound();
             return React.createElement(NotFoundPage, page);
         }
-
+        //<Link to="about"/>
+        //<Link to="info"/>
         return (
             <div className="App">
-                <Navbar />
-                <Header title={5}/>
-                <ContentPage className="container" {...page} />
-
-                <div className="navbar-footer">
-                    <div className="container">
-                        <p className="text-muted">
-                            <span>© Your Company</span>
-                            <span><a href="/">Home</a></span>
-                            <span><a href="/privacy">Privacy</a></span>
-                            <span><a href="/about">About</a></span>
-                            <span>{'Viewport: ' + this.props.viewport.width + 'x' + this.props.viewport.height}</span>
-                        </p>
-                    </div>
+                <h1>Hello React Router</h1>
+                <div className="links">
                 </div>
+                <RouteHandler />
             </div>
         );
     }
-
-    handlePopState(event) {
-        AppActions.navigateTo(window.location.pathname, {replace: !!event.state});
-    }
-
-    handleClick(event) {
-        if (event.button === 1 || event.metaKey || event.ctrlKey || event.shiftKey || event.defaultPrevented) {
-            return;
-        }
-
-        // Ensure link
-        var el = event.target;
-        while (el && el.nodeName !== 'A') {
-            el = el.parentNode;
-        }
-        if (!el || el.nodeName !== 'A') {
-            return;
-        }
-
-        // Ignore if tag has
-        // 1. "download" attribute
-        // 2. rel="external" attribute
-        if (el.getAttribute('download') || el.getAttribute('rel') === 'external') {
-            return;
-        }
-
-        // Ensure non-hash for the same path
-        var link = el.getAttribute('href');
-        if (el.pathname === location.pathname && (el.hash || link === '#')) {
-            return;
-        }
-
-        // Check for mailto: in the href
-        if (link && link.indexOf('mailto:') > -1) {
-            return;
-        }
-
-        // Check target
-        if (el.target) {
-            return;
-        }
-
-        // X-origin
-        var origin = window.location.protocol + '//' + window.location.hostname +
-            (window.location.port ? ':' + window.location.port : '');
-        if (!(el.href && el.href.indexOf(origin) === 0)) {
-            return;
-        }
-
-        // Rebuild path
-        var path = el.pathname + el.search + (el.hash || '');
-
-        event.preventDefault();
-        AppActions.loadPage(path, () => {
-            AppActions.navigateTo(path);
-        });
-    }
-
 }
+
 
 export default setViewport(App);

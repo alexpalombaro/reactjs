@@ -21,6 +21,7 @@ var argv = require('minimist')(process.argv.slice(2));
 
 // Settings
 var RELEASE = !!argv.release;                 // Minimize and optimize during a build?
+/*
 var AUTOPREFIXER_BROWSERS = [                 // https://github.com/ai/autoprefixer
     'ie >= 10',
     'ie_mob >= 10',
@@ -32,6 +33,7 @@ var AUTOPREFIXER_BROWSERS = [                 // https://github.com/ai/autoprefi
     'android >= 4.4',
     'bb >= 10'
 ];
+*/
 
 var src = {};
 var watch = false;
@@ -57,6 +59,7 @@ gulp.task('vendor-js', function () {
 });
 
 gulp.task('vendor', ['vendor-font', 'vendor-js'], function () {
+
 });
 
 // Static files
@@ -79,7 +82,7 @@ gulp.task('styles', function () {
         .pipe($.plumber())
         .pipe($.sass())
         .on('error', console.error.bind(console))
-        .pipe($.autoprefixer({browsers: AUTOPREFIXER_BROWSERS}))
+        //.pipe($.autoprefixer({browsers: AUTOPREFIXER_BROWSERS}))
         .pipe($.csscomb())
         .pipe($.if(RELEASE, $.minifyCss()))
         .pipe(gulp.dest('build/css'))
@@ -192,6 +195,7 @@ gulp.task('sync', ['serve'], function (cb) {
     });
 });
 
+/*
 // Deploy via Git
 gulp.task('deploy', function (cb) {
     var push = require('git-push');
@@ -212,6 +216,7 @@ gulp.task('pagespeed', function (cb) {
         // key: 'YOUR_API_KEY'
     }, cb);
 });
+*/
 
 
 // External Tasks

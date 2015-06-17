@@ -6,7 +6,7 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import './${name}.less';
+import './${name}.scss';
 import React from 'react';  // eslint-disable-line no-unused-vars
 
 class ${name} {
