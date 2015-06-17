@@ -24,8 +24,8 @@ class App {
             <div className="App">
                 <h1>Hello React Router</h1>
                 <div className="links">
-                    <Link to="about">About</Link>
-                    <Link to="info">Info</Link>
+                    <Link to="about" className="btn">About</Link>
+                    <Link to="info" className="btn">Info</Link>
                 </div>
                 <RouteHandler/>
             </div>
