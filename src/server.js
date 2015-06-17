@@ -61,7 +61,6 @@ server.get('*', function (req, res) {
     router.run((Handler) => {
         data.body = React.renderToString(<Handler {...data}/>);
         var html = template(data);
-        console.log(html);
         res.send(html);
     });
 });

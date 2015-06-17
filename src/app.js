@@ -16,6 +16,9 @@ import Dispatcher from './core/Dispatcher';
 import AppActions from './actions/AppActions';
 import ActionTypes from './constants/ActionTypes';
 
+import Router from 'react-router';
+import routes from './routes';
+
 let path = decodeURI(window.location.pathname);
 let setMetaTag = (name, content) => {
     // Remove and create a new <meta /> tag in order to make it work
@@ -40,16 +43,17 @@ function run() {
         onSetMeta: setMetaTag,
         onPageNotFound: emptyFunction
     };
-    let element = React.createElement(App, props);
-    React.render(element, document.body);
+    Router.run(routes, Router.HistoryLocation, (Root) => {
+        React.render(<Root {...props}/>, document.body);
+    });
 
     // Update `Application.path` prop when `window.location` is changed
-    Dispatcher.register((payload) => {
-        if (payload.action.actionType === ActionTypes.CHANGE_LOCATION) {
-            element = React.cloneElement(element, {path: payload.action.path});
-            React.render(element, document.body);
-        }
-    });
+    //Dispatcher.register((payload) => {
+    //    if (payload.action.actionType === ActionTypes.CHANGE_LOCATION) {
+    //        element = React.cloneElement(element, {path: payload.action.path});
+    //        React.render(element, document.body);
+    //    }
+    //});
 }
 
 // Run the application when both DOM is ready

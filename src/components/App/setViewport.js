@@ -8,9 +8,8 @@
 
 import React, { Component } from 'react'; // eslint-disable-line no-unused-vars
 import { canUseDOM } from 'react/lib/ExecutionEnvironment';
-import Router from 'react-router';
 
-import routes from '../../routes';
+import { RouteHandler } from 'react-router';
 
 function setViewport(ComposedComponent) {
 
@@ -45,7 +44,12 @@ function setViewport(ComposedComponent) {
         }
 
         render() {
-            return <ComposedComponent {...this.props} viewport={this.state.viewport}/>;
+            return (
+                <div>
+                    <ComposedComponent {...this.props} viewport={this.state.viewport}/>
+                    <RouteHandler/>
+                </div>
+            );
         }
 
     };

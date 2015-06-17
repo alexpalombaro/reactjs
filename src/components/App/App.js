@@ -8,13 +8,16 @@
 
 import './App.scss';
 import React, { PropTypes } from 'react';
-import { RouteHandler, Link } from 'react-router';
 import invariant from 'react/lib/invariant';
 import AppStore from '../../stores/AppStore';
-import NotFoundPage from '../NotFoundPage';
 import setViewport from './setViewport';
 
+import { Link } from 'react-router';
+
 class App {
+
+    constructor() {
+    }
 
     static propTypes = {
         path: PropTypes.string.isRequired,
@@ -36,22 +39,21 @@ class App {
     }
 
     render() {
-        var page = AppStore.getPage(this.props.path);
-        invariant(page !== undefined, 'Failed to load page content.');
-        this.props.onSetTitle(page.title);
-
-        if (page.type === 'notfound') {
-            this.props.onPageNotFound();
-            return React.createElement(NotFoundPage, page);
-        }
-        //<Link to="about"/>
-        //<Link to="info"/>
+        //var page = AppStore.getPage(this.props.path);
+        //invariant(page !== undefined, 'Failed to load page content.');
+        //this.props.onSetTitle(page.title);
+        //
+        //if (page.type === 'notfound') {
+        //    this.props.onPageNotFound();
+        //    return React.createElement(NotFoundPage, page);
+        //}
         return (
             <div className="App">
                 <h1>Hello React Router</h1>
                 <div className="links">
+                    <Link to="about">About</Link>
+                    <Link to="info">Info</Link>
                 </div>
-                <RouteHandler />
             </div>
         );
     }

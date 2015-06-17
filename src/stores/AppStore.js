@@ -34,7 +34,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
      * @param {String} path URL path.
      * @returns {*} Page data.
      */
-        getPage(path) {
+    getPage(path) {
         return path in pages ? pages[path] : {
             title: 'Page Not Found',
             type: 'notfound'
@@ -46,7 +46,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
      *
      * @returns {Boolean} Indication if we've emitted an event.
      */
-        emitChange() {
+    emitChange() {
         return this.emit(CHANGE_EVENT);
     },
 
@@ -55,7 +55,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
      *
      * @param {function} callback Callback function.
      */
-        onChange(callback) {
+    onChange(callback) {
         this.on(CHANGE_EVENT, callback);
     },
 
@@ -64,7 +64,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
      *
      * @param {function} callback Callback function.
      */
-        offChange(callback) {
+    offChange(callback) {
         this.off(CHANGE_EVENT, callback);
     }
 
