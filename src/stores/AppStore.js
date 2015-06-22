@@ -1,11 +1,3 @@
-/*
- * React.js Starter Kit
- * Copyright (c) 2014 Konstantin Tarkus (@koistya), KriaSoft LLC.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
 import Dispatcher from '../core/Dispatcher';
 import ActionTypes from '../constants/ActionTypes';
 import PayloadSources from '../constants/PayloadSources';
@@ -16,11 +8,7 @@ var CHANGE_EVENT = 'change';
 
 var pages = {};
 var loading = false;
-
-if (__SERVER__) {
-    pages['/'] = {title: 'Home Page'};
-    pages['/privacy'] = {title: 'Privacy Policy'};
-}
+var scroll = {x: 0, y: 0};
 
 var AppStore = assign({}, EventEmitter.prototype, {
 
@@ -28,12 +16,6 @@ var AppStore = assign({}, EventEmitter.prototype, {
         return loading;
     },
 
-    /**
-     * Gets page data by the given URL path.
-     *
-     * @param {String} path URL path.
-     * @returns {*} Page data.
-     */
     getPage(path) {
         return path in pages ? pages[path] : {
             title: 'Page Not Found',
@@ -41,31 +23,24 @@ var AppStore = assign({}, EventEmitter.prototype, {
         };
     },
 
-    /**
-     * Emits change event to all registered event listeners.
-     *
-     * @returns {Boolean} Indication if we've emitted an event.
-     */
     emitChange() {
         return this.emit(CHANGE_EVENT);
     },
 
-    /**
-     * Register a new change event listener.
-     *
-     * @param {function} callback Callback function.
-     */
     onChange(callback) {
         this.on(CHANGE_EVENT, callback);
     },
 
-    /**
-     * Remove change event listener.
-     *
-     * @param {function} callback Callback function.
-     */
     offChange(callback) {
         this.off(CHANGE_EVENT, callback);
+    },
+
+    /**
+     * @param axis can specify 'x' or 'y'
+     */
+    getScroll(axis) {
+        return axis === 'x' ? scroll.x :
+            axis === 'y' ? scroll.y : scroll;
     }
 
 });
@@ -84,6 +59,12 @@ AppStore.dispatcherToken = Dispatcher.register((payload) => {
                     pages[action.path] = action.page;
                 }
             }
+            AppStore.emitChange();
+            break;
+
+        case ActionTypes.SCROLL_PAGE:
+            scroll.x = action.scrollX;
+            scroll.y = action.scrollY;
             AppStore.emitChange();
             break;
 

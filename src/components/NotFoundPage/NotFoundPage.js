@@ -19,7 +19,6 @@ class NotFoundPage {
             </div>
         );
     }
-
 }
 
 export default NotFoundPage;

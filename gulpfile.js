@@ -21,7 +21,6 @@ var argv = require('minimist')(process.argv.slice(2));
 
 // Settings
 var RELEASE = !!argv.release;                 // Minimize and optimize during a build?
-/*
 var AUTOPREFIXER_BROWSERS = [                 // https://github.com/ai/autoprefixer
     'ie >= 10',
     'ie_mob >= 10',
@@ -33,7 +32,6 @@ var AUTOPREFIXER_BROWSERS = [                 // https://github.com/ai/autoprefi
     'android >= 4.4',
     'bb >= 10'
 ];
-*/
 
 var src = {};
 var watch = false;
@@ -49,12 +47,13 @@ gulp.task('clean', del.bind(
 
 // 3rd party libraries
 gulp.task('vendor-font', function () {
-    return gulp.src('node_modules/materialize-css/font/**')
-        .pipe(gulp.dest('build/font'));
+    return gulp.src('node_modules/bootstrap-sass/assets/fonts/**')
+        .pipe(gulp.dest('build/fonts'));
 });
 
 gulp.task('vendor-js', function () {
-    return gulp.src(['node_modules/materialize-css/bin/materialize.js', 'node_modules/jquery/dist/jquery.min.js'])
+    return gulp.src(['node_modules/bootstrap-sass/assets/javascripts/bootstrap.min.js',
+        'node_modules/jquery/dist/jquery.min.js'])
         .pipe(gulp.dest('build/js'));
 });
 
@@ -78,11 +77,11 @@ gulp.task('assets', function () {
 // CSS style sheets
 gulp.task('styles', function () {
     src.styles = 'src/styles/**/*.{css,scss}';
-    return gulp.src('src/styles/materialize.scss')
+    return gulp.src('src/styles/styles.scss')
         .pipe($.plumber())
         .pipe($.sass())
         .on('error', console.error.bind(console))
-        //.pipe($.autoprefixer({browsers: AUTOPREFIXER_BROWSERS}))
+        .pipe($.autoprefixer({browsers: AUTOPREFIXER_BROWSERS}))
         .pipe($.csscomb())
         .pipe($.if(RELEASE, $.minifyCss()))
         .pipe(gulp.dest('build/css'))
@@ -196,27 +195,27 @@ gulp.task('sync', ['serve'], function (cb) {
 });
 
 /*
-// Deploy via Git
-gulp.task('deploy', function (cb) {
-    var push = require('git-push');
-    var remote = argv.production ?
-        'https://github.com/{user}/{repo}.git' :
-        'https://github.com/{user}/{repo}-test.git';
-    push('./build', remote, cb);
-});
+ // Deploy via Git
+ gulp.task('deploy', function (cb) {
+ var push = require('git-push');
+ var remote = argv.production ?
+ 'https://github.com/{user}/{repo}.git' :
+ 'https://github.com/{user}/{repo}-test.git';
+ push('./build', remote, cb);
+ });
 
-// Run PageSpeed Insights
-gulp.task('pagespeed', function (cb) {
-    var pagespeed = require('psi');
-    // Update the below URL to the public URL of your site
-    pagespeed.output('example.com', {
-        strategy: 'mobile'
-        // By default we use the PageSpeed Insights free (no API key) tier.
-        // Use a Google Developer API key if you have one: http://goo.gl/RkN0vE
-        // key: 'YOUR_API_KEY'
-    }, cb);
-});
-*/
+ // Run PageSpeed Insights
+ gulp.task('pagespeed', function (cb) {
+ var pagespeed = require('psi');
+ // Update the below URL to the public URL of your site
+ pagespeed.output('example.com', {
+ strategy: 'mobile'
+ // By default we use the PageSpeed Insights free (no API key) tier.
+ // Use a Google Developer API key if you have one: http://goo.gl/RkN0vE
+ // key: 'YOUR_API_KEY'
+ }, cb);
+ });
+ */
 
 
 // External Tasks

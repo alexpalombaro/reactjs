@@ -1,11 +1,14 @@
 import './App.scss';
 import React, { PropTypes } from 'react';
 
-import { RouteHandler, Link } from 'react-router';
+import { RouteHandler } from 'react-router';
+import Header from '../Header';
+import Navbar from '../Navbar';
 
 class App {
 
     constructor() {
+
     }
 
     static propTypes = {
@@ -21,12 +24,9 @@ class App {
 
     render() {
         return (
-            <div className="App">
-                <h1>Hello React Router</h1>
-                <div className="links">
-                    <Link to="about" className="btn">About</Link>
-                    <Link to="info" className="btn">Info</Link>
-                </div>
+            <div className="App container">
+                <Navbar/>
+                <Header/>
                 <RouteHandler/>
             </div>
         );

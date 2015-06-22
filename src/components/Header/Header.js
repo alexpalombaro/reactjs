@@ -1,10 +1,13 @@
 import './Header.scss';
 import React from 'react';
 
-class Header {
+class Header extends React.Component {
 
-    static propTypes = {
-    };
+    static propTypes = {};
+
+    constructor(props) {
+        super(props);
+    }
 
     componentDidMount() {
     }
@@ -12,10 +15,13 @@ class Header {
     componentWillUnmount() {
     }
 
+    changeHandler() {
+    }
+
     render() {
         return (
             <div className="Header">
-                <button type="submit" className="btn waves-effect waves-light" name="submit">Material Button</button>
+                <h1>Alessandro Palombaro</h1>
             </div>
         );
     }

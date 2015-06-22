@@ -2,10 +2,7 @@ import 'babel/polyfill';
 
 import React from 'react/addons';
 import FastClick from 'fastclick';
-import emptyFunction from 'react/lib/emptyFunction';
-import Dispatcher from './core/Dispatcher';
 import AppActions from './actions/AppActions';
-import ActionTypes from './constants/ActionTypes';
 
 import Router from 'react-router';
 import routes from './routes';
@@ -47,6 +44,10 @@ Promise.all([
         } else {
             window.attachEvent('onload', resolve);
         }
-    }).then(() => FastClick.attach(document.body)),
+    }).then(() => {
+        FastClick.attach(document.body);
+        window.addEventListener('scroll', AppActions.pageScroll);
+        AppActions.pageScroll(); // update on load
+    }),
     new Promise((resolve) => AppActions.loadPage(path, resolve))
 ]).then(run);
