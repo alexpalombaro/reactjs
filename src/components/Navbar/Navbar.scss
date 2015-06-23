@@ -1,2 +1,24 @@
-div.Navbar {
+div#Navbar {
+
+  h2 {
+    margin: auto;
+    float: left;
+  }
+
+  h2 > .subtext {
+    display: block;
+    font-size: 0.6em;
+    font-style: italic;
+  }
+
+  img.logo {
+    float: left;
+    margin-right: 10px;
+    margin-top: -5px;
+  }
+
+  .navbar-brand {
+    padding: 15px 0;
+  }
 }
+

@@ -7,7 +7,7 @@ import NotFoundPage from '../components/NotFoundPage';
 
 const routes = (
     <Route handler={App}>
-        <DefaultRoute handler={About}/>
+        <DefaultRoute name="home" handler={About}/>
         <Route name="about" handler={About}/>
         <Route name="info" handler={Info}/>
         <NotFoundRoute handler={NotFoundPage}/>

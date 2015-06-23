@@ -26,8 +26,10 @@ class App {
         return (
             <div className="App container">
                 <Navbar/>
-                <Header/>
-                <RouteHandler/>
+                <div className="content">
+                    <Header/>
+                    <RouteHandler/>
+                </div>
             </div>
         );
     }

@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
-@import "variables"; // inc. bootstrap overrides
+@import "variables";
+// inc. bootstrap overrides
 @import "bootstrap-custom";
 
+div.content {
+  padding-top: $navbar-height;
+}
