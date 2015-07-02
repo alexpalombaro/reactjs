@@ -1,3 +1,5 @@
+@import '../../styles/variables';
+
 div#Navbar {
 
   h2 {
@@ -7,18 +9,34 @@ div#Navbar {
 
   h2 > .subtext {
     display: block;
-    font-size: 0.6em;
+    font-size: 0.58em;
     font-style: italic;
   }
 
-  img.logo {
-    float: left;
-    margin-right: 10px;
-    margin-top: -5px;
+  .navbar-brand {
+    padding: 15px 15px;
   }
 
-  .navbar-brand {
-    padding: 15px 0;
+  .navbar-logo {
+    float: left;
+    margin-right: 15px;
+    margin-top: 4px;
+  }
+
+  .inverse-inactive path {
+    fill: $navbar-inverse-link-color;
+  }
+
+  .inverse-active path {
+    fill: $navbar-inverse-link-hover-color;
+  }
+
+  .navbar {
+    transition: opacity 500ms, top 500ms;
+  }
+
+  .hidden {
+    opacity: 0;
+    top: -$navbar-height;
   }
 }
-

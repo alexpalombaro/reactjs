@@ -36,18 +36,16 @@ function run() {
 }
 
 // Run the application when both DOM is ready
-// and page content is loaded
-Promise.all([
-    new Promise((resolve) => {
-        if (window.addEventListener) {
-            window.addEventListener('DOMContentLoaded', resolve);
-        } else {
-            window.attachEvent('onload', resolve);
-        }
-    }).then(() => {
-        FastClick.attach(document.body);
-        window.addEventListener('scroll', AppActions.pageScroll);
-        AppActions.pageScroll(); // update on load
-    }),
-    new Promise((resolve) => AppActions.loadPage(path, resolve))
-]).then(run);
+new Promise((resolve) => {
+    if (window.addEventListener) {
+        window.addEventListener('DOMContentLoaded', resolve);
+    } else {
+        window.attachEvent('onload', resolve);
+    }
+}).then(() => {
+    FastClick.attach(document.body);
+    window.addEventListener('scroll', AppActions.pageScroll);
+    window.addEventListener('resize', AppActions.resize);
+    AppActions.pageScroll(); // update on load
+    AppActions.resize(); // update on load
+}).then(run);

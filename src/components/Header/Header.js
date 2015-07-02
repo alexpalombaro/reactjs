@@ -1,12 +1,11 @@
 import './Header.scss';
 import React from 'react';
 
-class Header extends React.Component {
+class Header {
 
     static propTypes = {};
 
     constructor(props) {
-        super(props);
     }
 
     componentDidMount() {
@@ -21,6 +20,7 @@ class Header extends React.Component {
     render() {
         return (
             <div className="Header">
+                <h1>Header content</h1>
             </div>
         );
     }

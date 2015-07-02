@@ -8,7 +8,6 @@ import Navbar from '../Navbar';
 class App {
 
     constructor() {
-
     }
 
     static propTypes = {
@@ -24,8 +23,8 @@ class App {
 
     render() {
         return (
-            <div className="App container">
-                <Navbar/>
+            <div className="App">
+                <Navbar hideOnScroll={120} showOnScroll={-80}/>
                 <div className="content">
                     <Header/>
                     <RouteHandler/>

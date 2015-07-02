@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "babel": "5.1.10",
+    "babel-runtime": "^5.6.15",
     "bootstrap-sass": "^3.3.5",
+    "classnames": "^2.1.2",
     "eventemitter3": "0.1.6",
     "express": "4.12.3",
     "fastclick": "1.0.6",
@@ -21,9 +23,12 @@
     "jquery": "^2.1.4",
     "lodash": "3.6.0",
     "prompt": "^0.2.14",
+    "raw-loader": "^0.5.1",
     "react": "0.13.1",
     "react-router": "^0.13.3",
-    "superagent": "1.2.0"
+    "superagent": "1.2.0",
+    "svgo": "^0.5.3",
+    "svgo-loader": "^1.1.0"
   },
   "devDependencies": {
     "autoprefixer-loader": "^1.2.0",

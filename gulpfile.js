@@ -64,7 +64,7 @@ gulp.task('vendor', ['vendor-font', 'vendor-js'], function () {
 // Static files
 gulp.task('assets', function () {
     src.assets = [
-        'src/assets/**',
+        'src/assets/*.*',
         'src/content*/**/*.*',
         'src/templates*/**/*.*'
     ];

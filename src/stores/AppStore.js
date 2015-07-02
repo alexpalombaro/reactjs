@@ -1,27 +1,24 @@
 import Dispatcher from '../core/Dispatcher';
 import ActionTypes from '../constants/ActionTypes';
-import PayloadSources from '../constants/PayloadSources';
 import EventEmitter from 'eventemitter3';
 import assign from 'react/lib/Object.assign';
 
+//
+// Properties
+// -----------------------------------------------------------------------------
+
 var CHANGE_EVENT = 'change';
 
-var pages = {};
-var loading = false;
-var scroll = {x: 0, y: 0};
+var scrollX = 0;
+var scrollY = 0;
+var width = 1024;
+var height = 768;
+
+//
+// Public Model
+// -----------------------------------------------------------------------------
 
 var AppStore = assign({}, EventEmitter.prototype, {
-
-    isLoading() {
-        return loading;
-    },
-
-    getPage(path) {
-        return path in pages ? pages[path] : {
-            title: 'Page Not Found',
-            type: 'notfound'
-        };
-    },
 
     emitChange() {
         return this.emit(CHANGE_EVENT);
@@ -36,11 +33,21 @@ var AppStore = assign({}, EventEmitter.prototype, {
     },
 
     /**
-     * @param axis can specify 'x' or 'y'
+     * Get the current window scroll position
+     * @param {String} [axis] 'x' or 'y'
+     * @return {Object|Number} Object with x, y properties or value of x/y
      */
     getScroll(axis) {
-        return axis === 'x' ? scroll.x :
-            axis === 'y' ? scroll.y : scroll;
+        return axis === 'x' ? scrollX :
+            axis === 'y' ? scrollY : {x: scrollX, y: scrollY};
+    },
+
+    /**
+     * Get the current window size
+     * @return {Object} Object with width height properties
+     */
+    getSize() {
+        return {width, height};
     }
 
 });
@@ -50,21 +57,15 @@ AppStore.dispatcherToken = Dispatcher.register((payload) => {
 
     switch (action.actionType) {
 
-        case ActionTypes.LOAD_PAGE:
-            if (action.source === PayloadSources.VIEW_ACTION) {
-                loading = true;
-            } else {
-                loading = false;
-                if (!action.err) {
-                    pages[action.path] = action.page;
-                }
-            }
+        case ActionTypes.SCROLL_PAGE:
+            scrollX = action.scrollX;
+            scrollY = action.scrollY;
             AppStore.emitChange();
             break;
 
-        case ActionTypes.SCROLL_PAGE:
-            scroll.x = action.scrollX;
-            scroll.y = action.scrollY;
+        case ActionTypes.RESIZE:
+            width = action.width;
+            height = action.height;
             AppStore.emitChange();
             break;
 

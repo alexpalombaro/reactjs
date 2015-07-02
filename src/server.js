@@ -1,11 +1,3 @@
-/*
- * React.js Starter Kit
- * Copyright (c) 2014 Konstantin Tarkus (@koistya), KriaSoft LLC.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
 import _ from 'lodash';
 import fs from 'fs';
 import path from 'path';
@@ -14,22 +6,12 @@ import React from 'react';
 import Router from 'react-router';
 import Dispatcher from './core/Dispatcher';
 import ActionTypes from './constants/ActionTypes';
-import AppStore from './stores/AppStore';
 import routes from './routes';
 
 var server = express();
 
 server.set('port', (process.env.PORT || 5000));
 server.use(express.static(path.join(__dirname)));
-
-//
-// Page API
-// -----------------------------------------------------------------------------
-server.get('/api/page/*', function (req, res) {
-    var urlPath = req.path.substr(9);
-    var page = AppStore.getPage(urlPath);
-    res.send(page);
-});
 
 //
 // Server-side rendering

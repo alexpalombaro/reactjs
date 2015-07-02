@@ -26,6 +26,11 @@ var GLOBALS = {
 // client-side (app.js) and server-side (server.js) bundles
 // -----------------------------------------------------------------------------
 
+var fileLoaderQuery = {
+    name: 'assets/[name]_[hash].[ext]',
+    limit: 10000
+};
+
 var config = {
     output: {
         path: './build/',
@@ -70,24 +75,36 @@ var config = {
             },
             {
                 test: /\.gif/,
-                loader: 'url-loader?limit=10000&mimetype=image/gif'
+                loader: 'url-loader',
+                query: fileLoaderQuery
             },
             {
                 test: /\.jpg/,
-                loader: 'url-loader?limit=10000&mimetype=image/jpg'
+                loader: 'url-loader',
+                query: fileLoaderQuery
             },
             {
                 test: /\.png/,
-                loader: 'url-loader?limit=10000&mimetype=image/png'
+                loader: 'url-loader',
+                query: fileLoaderQuery
             },
             {
                 test: /\.svg/,
-                loader: 'url-loader?limit=10000&mimetype=image/svg+xml'
+                loader: 'url-loader',
+                query: fileLoaderQuery,
+                exclude: /sig\.svg$/
+            },
+            {
+                test: /\.svg/,
+                loader: 'raw-loader!svgo-loader'
             },
             {
                 test: /\.jsx?$/,
                 exclude: /node_modules/,
-                loader: 'babel-loader'
+                loader: 'babel-loader',
+                query: {
+                    optional: ['runtime']
+                }
             }
         ]
     }
