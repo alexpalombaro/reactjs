@@ -13,6 +13,7 @@ var scrollX = 0;
 var scrollY = 0;
 var width = 1024;
 var height = 768;
+var pages = {};
 
 //
 // Public Model
@@ -48,6 +49,14 @@ var AppStore = assign({}, EventEmitter.prototype, {
      */
     getSize() {
         return {width, height};
+    },
+
+    /**
+     * Get page html content
+     * @return {String} Html string
+     */
+    getPage(path) {
+        return path in pages ? pages[path] : null;
     }
 
 });
@@ -66,6 +75,11 @@ AppStore.dispatcherToken = Dispatcher.register((payload) => {
         case ActionTypes.RESIZE:
             width = action.width;
             height = action.height;
+            AppStore.emitChange();
+            break;
+
+        case ActionTypes.LOAD_PAGE:
+            pages[action.path] = action.page;
             AppStore.emitChange();
             break;
 

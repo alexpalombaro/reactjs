@@ -35,8 +35,7 @@ function run() {
     });
 }
 
-// Run the application when both DOM is ready
-new Promise((resolve) => {
+Promise.all([new Promise((resolve) => {
     if (window.addEventListener) {
         window.addEventListener('DOMContentLoaded', resolve);
     } else {
@@ -48,4 +47,4 @@ new Promise((resolve) => {
     window.addEventListener('resize', AppActions.resize);
     AppActions.pageScroll(); // update on load
     AppActions.resize(); // update on load
-}).then(run);
+}), new Promise((resolve) => AppActions.loadPage(path, resolve))]).then(run);

@@ -1,23 +1,52 @@
 import './About.scss';
 import React from 'react';
 
-class About {
+import AppActions from '../../actions/AppActions.js';
+import AppStore from '../../stores/AppStore.js';
 
-    static propTypes = {
-    };
+class About extends React.Component {
 
-    componentDidMount() {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            bodyText: ''
+        };
+
+        this._appStoreChangeHandler = this.appStoreChangeHandler.bind(this);
+    }
+
+    componentWillMount() {
+        AppStore.onChange(this._appStoreChangeHandler);
+        var page = AppStore.getPage('/about');
+        if (page) {
+            this.appStoreChangeHandler(page)
+        } else {
+            AppActions.loadPage('/about');
+        }
     }
 
     componentWillUnmount() {
+        AppStore.offChange(this._appStoreChangeHandler);
     }
 
     render() {
         return (
-            <div className="About">
-                <p>Hello About component</p>
+            <div className="About container" dangerouslySetInnerHTML={{__html: this.state.bodyText}}>
             </div>
         );
+    }
+
+    //
+    // Event handlers
+    // -----------------------------------------------------------------------------
+
+    appStoreChangeHandler(page) {
+        page = page || AppStore.getPage('/about');
+        if (this.page !== page) {
+            this.page = page;
+            this.setState({bodyText: this.page.body});
+        }
     }
 }
 

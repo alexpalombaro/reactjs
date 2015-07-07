@@ -22,7 +22,17 @@ let Dispatcher = assign(new Flux.Dispatcher(), {
             action: action
         };
         this.dispatch(payload);
+    },
+
+    handleAppAction(action) {
+        var payload = {
+            source: PayloadSources.APP_ACTION,
+            action: action
+        };
+
+        this.dispatch(payload);
     }
+
 
 });
 

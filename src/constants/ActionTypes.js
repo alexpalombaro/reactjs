@@ -11,6 +11,7 @@ import keyMirror from 'react/lib/keyMirror';
 export default keyMirror({
 
     SCROLL_PAGE: null,
-    RESIZE: null
+    RESIZE: null,
+    LOAD_PAGE: null
 
 });

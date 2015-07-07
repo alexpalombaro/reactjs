@@ -6,12 +6,18 @@ import React from 'react';
 import Router from 'react-router';
 import Dispatcher from './core/Dispatcher';
 import ActionTypes from './constants/ActionTypes';
+import AppStore from './stores/AppStore';
 import routes from './routes';
 
 var server = express();
 
 server.set('port', (process.env.PORT || 5000));
 server.use(express.static(path.join(__dirname)));
+
+server.use('/page/:path', function (req, res) {
+    var page = AppStore.getPage('/' + req.params.path) || AppStore.getPage('/error');
+    res.send({path: req.params.path, page});
+});
 
 //
 // Server-side rendering
@@ -24,7 +30,7 @@ var template = _.template(fs.readFileSync(templateFile, 'utf8'));
 server.get('*', function (req, res) {
     var data = {
         description: '',
-        title: 'React Testing',
+        title: 'Alessandro Palombaro',
         path: req.path,
         onSetTitle: function (title) {
             data.title = title;
@@ -60,12 +66,7 @@ server.get('*', function (req, res) {
             } else {
                 // Convert the file to a Page object
                 var filename = path.join(dir, file);
-                var url = filename.
-                    substr(sourceDir.length, filename.length - sourceDir.length - 5)
-                    .replace('\\', '/');
-                if (url.indexOf('/index', url.length - 6) !== -1) {
-                    url = url.substr(0, url.length - (url.length > 6 ? 6 : 5));
-                }
+                var url = filename.substr(sourceDir.length, filename.length - sourceDir.length - 5).replace('\\', '/');
                 var source = fs.readFileSync(filename, 'utf8');
                 var content = fm(source);
                 var html = jade.render(content.body);

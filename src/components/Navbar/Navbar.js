@@ -28,22 +28,30 @@ class Navbar extends React.Component {
             mouseOverBrand: false,
             hidden: false
         };
+
+        this._appStoreChangeHandler = this._appStoreChangeHandler.bind(this);
     }
 
     componentWillMount() {
-        AppStore.onChange(this._appStoreChangeHandler.bind(this));
+        AppStore.onChange(this._appStoreChangeHandler);
+    }
+
+    componentWillUnmount() {
+        AppStore.offChange(this._appStoreChangeHandler);
     }
 
     render() {
-
         return (
-            <div id="Navbar" role="navigation">
+            <nav className="Navbar" role="navigation">
                 <div className={this._resolveNavBarClass()}>
                     <div className="container">
                         <div className="navbar-header">
                             <Link to="home" className="navbar-brand"
                                   onMouseEnter={() => this.setState({mouseOverBrand: true})}
-                                  onMouseLeave={() => this.setState({mouseOverBrand: false})}>
+                                  onMouseLeave={() => {
+                                      this.setState({mouseOverBrand: false});
+                                      document.activeElement.blur();
+                                  }}>
 
                                 <Logo className={this._resolveLogoClass()}/>
 
@@ -60,12 +68,11 @@ class Navbar extends React.Component {
                         <div className="collapse navbar-collapse" id="navbar-collapse-target">
                             <ul className="nav navbar-right navbar-nav nav-pills">
                                 <li><Link to="about">About</Link></li>
-                                <li><Link to="info">Info</Link></li>
                             </ul>
                         </div>
                     </div>
                 </div>
-            </div>
+            </nav>
         );
     }
 
@@ -100,7 +107,7 @@ class Navbar extends React.Component {
      */
     _appStoreChangeHandler() {
 
-        console.log(React.findDOMNode(this).firstChild.clientHeight);
+        //console.log(React.findDOMNode(this).firstChild.clientHeight);
 
         var newScrollY = AppStore.getScroll().y;
         if (newScrollY !== this.scrollY) {
