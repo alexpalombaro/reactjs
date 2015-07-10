@@ -19,6 +19,13 @@ server.use('/page/:path', function (req, res) {
     res.send({path: req.params.path, page});
 });
 
+server.use('/data', function (req, res) {
+    var data = {
+        pages: AppStore.getPage('*')
+    };
+    res.send(data);
+});
+
 //
 // Server-side rendering
 // -----------------------------------------------------------------------------

@@ -56,7 +56,8 @@ var AppStore = assign({}, EventEmitter.prototype, {
      * @return {String} Html string
      */
     getPage(path) {
-        return path in pages ? pages[path] : null;
+        return path in pages ? pages[path] :
+            path === '*' ? pages : null;
     }
 
 });
@@ -80,6 +81,11 @@ AppStore.dispatcherToken = Dispatcher.register((payload) => {
 
         case ActionTypes.LOAD_PAGE:
             pages[action.path] = action.page;
+            AppStore.emitChange();
+            break;
+
+        case ActionTypes.APP_DATA:
+            pages = assign(pages, action.data.pages);
             AppStore.emitChange();
             break;
 

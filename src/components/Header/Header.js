@@ -5,16 +5,7 @@ class Header {
 
     static propTypes = {};
 
-    constructor(props) {
-    }
-
-    componentDidMount() {
-    }
-
-    componentWillUnmount() {
-    }
-
-    changeHandler() {
+    constructor() {
     }
 
     render() {

@@ -3,11 +3,16 @@ import 'babel/polyfill';
 import React from 'react/addons';
 import FastClick from 'fastclick';
 import AppActions from './actions/AppActions';
+import Global from './constants/Global';
 
 import Router from 'react-router';
 import routes from './routes';
 
-let path = decodeURI(window.location.pathname);
+import debug from 'debug';
+
+debug.enable(Global.DEBUG_NS + '*');
+
+//let path = decodeURI(window.location.pathname);
 let setMetaTag = (name, content) => {
     // Remove and create a new <meta /> tag in order to make it work
     // with bookmarks in Safari
@@ -35,7 +40,7 @@ function run() {
     });
 }
 
-Promise.all([new Promise((resolve) => {
+new Promise((resolve) => {
     if (window.addEventListener) {
         window.addEventListener('DOMContentLoaded', resolve);
     } else {
@@ -45,6 +50,9 @@ Promise.all([new Promise((resolve) => {
     FastClick.attach(document.body);
     window.addEventListener('scroll', AppActions.pageScroll);
     window.addEventListener('resize', AppActions.resize);
-    AppActions.pageScroll(); // update on load
-    AppActions.resize(); // update on load
-}), new Promise((resolve) => AppActions.loadPage(path, resolve))]).then(run);
+    return AppActions.initialise();
+}).then(() => {
+    run();
+}).catch((err) => {
+    console.error(err);
+});

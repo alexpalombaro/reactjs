@@ -8,9 +8,10 @@
 
 /* global jest, describe, it, expect */
 
+/*eslint-disable strict*/
 'use strict';
 
-jest.dontMock('../Navbar');
+//jest.dontMock('../Navbar');
 
 describe('Navbar', function () {
 

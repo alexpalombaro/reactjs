@@ -12,6 +12,7 @@ export default keyMirror({
 
     SCROLL_PAGE: null,
     RESIZE: null,
-    LOAD_PAGE: null
+    LOAD_PAGE: null,
+    APP_DATA: null
 
 });

@@ -9,18 +9,13 @@ class About extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            bodyText: ''
-        };
-
         this._appStoreChangeHandler = this.appStoreChangeHandler.bind(this);
     }
 
     componentWillMount() {
         AppStore.onChange(this._appStoreChangeHandler);
-        var page = AppStore.getPage('/about');
-        if (page) {
-            this.appStoreChangeHandler(page)
+        if (AppStore.getPage('/about')) {
+            this.appStoreChangeHandler();
         } else {
             AppActions.loadPage('/about');
         }
@@ -41,8 +36,8 @@ class About extends React.Component {
     // Event handlers
     // -----------------------------------------------------------------------------
 
-    appStoreChangeHandler(page) {
-        page = page || AppStore.getPage('/about');
+    appStoreChangeHandler() {
+        var page = AppStore.getPage('/about');
         if (this.page !== page) {
             this.page = page;
             this.setState({bodyText: this.page.body});
