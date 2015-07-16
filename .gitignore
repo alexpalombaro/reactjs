@@ -2,6 +2,7 @@
 # Read about how to use .gitignore: https://help.github.com/articles/ignoring-files
 
 build
+build-test
 node_modules
 npm-debug.log
 

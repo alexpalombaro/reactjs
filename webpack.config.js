@@ -162,4 +162,27 @@ var serverConfig = _.merge({}, config, {
     }
 });
 
-module.exports = [appConfig, serverConfig];
+
+//
+// Configuration for testing
+// -----------------------------------------------------------------------------
+
+var glob = require('glob');
+//var path = require('path');
+//var entries = {};
+//_.forEach(glob.sync('./src/**/__tests__/**.js'), function (file) {
+//    entries[path.basename(file, path.extname(file))] = file;
+//});
+
+var testConfig = _.merge({}, config, {
+    entry: glob.sync('./src/**/__tests__/**.js'),
+    output: {
+        path: './build-test/',
+        filename: 'tests.js'
+    }
+});
+
+module.exports = {
+    build: [appConfig, serverConfig],
+    test: testConfig
+};

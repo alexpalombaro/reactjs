@@ -1,11 +1,3 @@
-/*
- * React.js Starter Kit
- * Copyright (c) 2014 Konstantin Tarkus (@koistya), KriaSoft LLC.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
 /*eslint-disable strict*/
 'use strict';
 
@@ -37,12 +29,16 @@ var src = {};
 var watch = false;
 var browserSync;
 
+//
+// Util
+// -----------------------------------------------------------------------------
+
 // The default task
 gulp.task('default', ['sync']);
 
 // Clean output directory
 gulp.task('clean', del.bind(
-    null, ['.tmp', 'build/*', '!build/.git'], {dot: true}
+    null, ['.tmp', 'build/*', 'build-test/*'], {dot: true}
 ));
 
 // 3rd party libraries
@@ -57,9 +53,7 @@ gulp.task('vendor-js', function () {
         .pipe(gulp.dest('build/js'));
 });
 
-gulp.task('vendor', ['vendor-font', 'vendor-js'], function () {
-
-});
+gulp.task('vendor', ['vendor-font', 'vendor-js'], $.util.noop);
 
 // Static files
 gulp.task('assets', function () {
@@ -88,33 +82,66 @@ gulp.task('styles', function () {
         .pipe($.size({title: 'styles'}));
 });
 
-// Bundle
-gulp.task('bundle', function (cb) {
-    var started = false;
-    var config = require('./webpack.config.js');
-    var bundler = webpack(config);
+//
+// Webpack bundle
+// -----------------------------------------------------------------------------
 
-    function bundle(err, stats) {
-        if (err) {
-            throw new $.util.PluginError('webpack', err);
-        }
-
-        if (argv.verbose) {
-            $.util.log('[webpack]', stats.toString({colors: true}));
-        }
-
-        if (!started) {
-            started = true;
-            return cb();
-        }
+var started = false;
+var config = require('./webpack.config.js');
+var bundleCallback = function (err, stats, cb) {
+    if (err) {
+        throw new $.util.PluginError('webpack', err);
     }
+
+    if (argv.verbose) {
+        $.util.log('[webpack]', stats.toString({colors: true}));
+    }
+
+    if (!started) {
+        started = true;
+        return cb();
+    }
+};
+
+// Bundle build
+gulp.task('bundle', function (cb) {
+    var bundler = webpack(config.build);
 
     if (watch) {
-        bundler.watch(200, bundle);
+        bundler.watch(200, function (err, stats) {
+            bundleCallback(err, stats, cb);
+        });
     } else {
-        bundler.run(bundle);
+        bundler.run(function (err, stats) {
+            bundleCallback(err, stats, cb);
+        });
     }
 });
+
+// Bundle test
+gulp.task('bundle:test', function (cb) {
+    var bundler = webpack(config.test);
+    bundler.run(function (err, stats) {
+        bundleCallback(err, stats, cb);
+    });
+});
+
+//
+// Testing
+// -----------------------------------------------------------------------------
+gulp.task('test', ['bundle:test'], function () {
+    var Jasmine = require('jasmine');
+    var instance = new Jasmine();
+    instance.loadConfig({
+        spec_dir: 'build-test', //eslint-disable-line camelcase
+        spec_files: ['tests.js'] //eslint-disable-line camelcase
+    });
+    instance.execute();
+});
+
+//
+// Build sequences
+// -----------------------------------------------------------------------------
 
 // Build the app from source code
 gulp.task('build', ['clean'], function (cb) {
@@ -130,6 +157,10 @@ gulp.task('build:watch', function (cb) {
         cb();
     });
 });
+
+//
+// Server
+// -----------------------------------------------------------------------------
 
 // Launch a Node.js/Express server
 gulp.task('serve', ['build:watch'], function (cb) {
@@ -194,29 +225,8 @@ gulp.task('sync', ['serve'], function (cb) {
     });
 });
 
-/*
- // Deploy via Git
- gulp.task('deploy', function (cb) {
- var push = require('git-push');
- var remote = argv.production ?
- 'https://github.com/{user}/{repo}.git' :
- 'https://github.com/{user}/{repo}-test.git';
- push('./build', remote, cb);
- });
+//
+// External tasks
+// -----------------------------------------------------------------------------
 
- // Run PageSpeed Insights
- gulp.task('pagespeed', function (cb) {
- var pagespeed = require('psi');
- // Update the below URL to the public URL of your site
- pagespeed.output('example.com', {
- strategy: 'mobile'
- // By default we use the PageSpeed Insights free (no API key) tier.
- // Use a Google Developer API key if you have one: http://goo.gl/RkN0vE
- // key: 'YOUR_API_KEY'
- }, cb);
- });
- */
-
-
-// External Tasks
 require('./gulp_tasks/add-component')(gulp);

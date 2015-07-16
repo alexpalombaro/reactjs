@@ -1,6 +1,6 @@
 /* globals describe, it, expect */
 
-import Navbar from '../Navbar.js';
+import Logo from '../Logo.js';
 
 var helloWorld = function () {
     return 'Hello world!';
