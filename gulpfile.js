@@ -1,11 +1,3 @@
-/*
- * React.js Starter Kit
- * Copyright (c) 2014 Konstantin Tarkus (@koistya), KriaSoft LLC.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
 /*eslint-disable strict*/
 'use strict';
 
@@ -66,7 +58,9 @@ gulp.task('assets', function () {
     src.assets = [
         'src/assets/*.*',
         'src/content*/**/*.*',
-        'src/templates*/**/*.*'
+        'src/templates*/**/*.*',
+        'package.json',
+        'Procfile'
     ];
     return gulp.src(src.assets)
         .pipe($.changed('build'))
