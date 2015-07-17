@@ -60,7 +60,9 @@ gulp.task('assets', function () {
     src.assets = [
         'src/assets/*.*',
         'src/content*/**/*.*',
-        'src/templates*/**/*.*'
+        'src/templates*/**/*.*',
+        'package.json',
+        'Procfile'
     ];
     return gulp.src(src.assets)
         .pipe($.changed('build'))
