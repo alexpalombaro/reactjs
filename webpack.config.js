@@ -1,8 +1,3 @@
-/*!
- * Facebook React Starter Kit | https://github.com/kriasoft/react-starter-kit
- * Copyright (c) KriaSoft, LLC. All rights reserved. See LICENSE.txt
- */
-
 /*eslint-disable strict*/
 'use strict';
 
@@ -168,12 +163,6 @@ var serverConfig = _.merge({}, config, {
 // -----------------------------------------------------------------------------
 
 var glob = require('glob');
-//var path = require('path');
-//var entries = {};
-//_.forEach(glob.sync('./src/**/__tests__/**.js'), function (file) {
-//    entries[path.basename(file, path.extname(file))] = file;
-//});
-
 var testConfig = _.merge({}, config, {
     entry: glob.sync('./src/**/__tests__/**.js'),
     output: {

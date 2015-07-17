@@ -53,7 +53,7 @@ gulp.task('vendor-js', function () {
         .pipe(gulp.dest('build/js'));
 });
 
-gulp.task('vendor', ['vendor-font', 'vendor-js'], $.util.noop);
+gulp.task('vendor', ['vendor-font', 'vendor-js']);
 
 // Static files
 gulp.task('assets', function () {
