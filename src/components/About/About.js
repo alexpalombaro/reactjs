@@ -1,6 +1,8 @@
 import './About.scss';
 import React from 'react';
 
+import TLDR from '../TLDR'
+
 import AppActions from '../../actions/AppActions.js';
 import AppStore from '../../stores/AppStore.js';
 
@@ -27,7 +29,8 @@ class About extends React.Component {
 
     render() {
         return (
-            <div className="About container" dangerouslySetInnerHTML={{__html: this.state.bodyText}}>
+            <div className="About container">
+                <div dangerouslySetInnerHTML={{__html: this.state.bodyText}}/>
             </div>
         );
     }

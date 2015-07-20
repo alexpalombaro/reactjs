@@ -4,6 +4,10 @@
 // inc. bootstrap overrides
 @import "bootstrap-custom";
 
-div.content {
-  padding-top: $navbar-height;
+div#nojs {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2em;
+  text-align: center;
 }

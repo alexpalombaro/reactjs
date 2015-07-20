@@ -3,24 +3,36 @@
 nav.Navbar {
 
   h2 {
-    margin: auto;
-    float: left;
+    display: inline-block;
+    margin: 0 110px 0 0;
   }
 
-  h2 > .subtext {
+  span.subtext {
     display: block;
     font-size: 0.58em;
     font-style: italic;
   }
 
   .navbar-brand {
-    padding: 15px 15px;
+    height: auto;
+    white-space: nowrap;
+    h2 {
+      white-space: normal;
+    }
   }
 
   .navbar-logo {
-    float: left;
+    display: inline-block;
     margin-right: 15px;
-    margin-top: 4px;
+    position: relative;
+    vertical-align: top;
+    top: 4px;
+  }
+
+  .navbar-toggle {
+    position: absolute;
+    right: 0;
+    margin-top: 15px;
   }
 
   .inverse-inactive path {

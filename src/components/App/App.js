@@ -2,12 +2,27 @@ import './App.scss';
 import React, { PropTypes } from 'react';
 
 import { RouteHandler } from 'react-router';
+
 import Header from '../Header';
 import Navbar from '../Navbar';
 
-class App {
+import AppStore from '../../stores/AppStore.js';
 
-    constructor() {
+//
+// Component Class
+// -----------------------------------------------------------------------------
+
+class App extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            navHidden: false,
+            navHeight: 0
+        };
+
+        this._appStoreChangeHandler = this._appStoreChangeHandler.bind(this)
     }
 
     static propTypes = {
@@ -16,22 +31,48 @@ class App {
     };
 
     componentDidMount() {
+        AppStore.onChange(this._appStoreChangeHandler);
     }
 
     componentWillUnmount() {
+        AppStore.offChange(this._appStoreChangeHandler);
     }
 
     render() {
+        var styles = {
+            marginTop: (this.state.navHeight + 15) + 'px'
+        };
+
         return (
             <div className="App">
-                <Navbar hideOnScroll={120} showOnScroll={-80}/>
-                <div className="content">
-                    <Header/>
+                <Navbar ref="nav" hidden={this.state.navHidden}/>
+
+                <div className="content" style={styles}>
                     <RouteHandler/>
                 </div>
             </div>
         );
     }
+
+    //
+    // Event Handlers
+    // -----------------------------------------------------------------------------
+
+    /**
+     * Triggered on AppStore change
+     * @private
+     */
+    _appStoreChangeHandler() {
+        var totalY = AppStore.getScrollTotal('y');
+        this.state.navHidden && totalY < -80 ? this.setState({navHidden: false}) :
+            !this.state.navHidden && totalY > 120 ? this.setState({navHidden: true}) : null;
+
+        var navHeight = React.findDOMNode(this.refs.nav).firstChild.clientHeight;
+        if (this.state.navHeight !== navHeight) {
+            this.setState({navHeight});
+        }
+    }
+
 }
 
 export default App;
