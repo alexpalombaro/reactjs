@@ -1,3 +1,5 @@
+/*global __DEV__ */
+
 import _ from 'lodash';
 import fs from 'fs';
 import path from 'path';
@@ -53,6 +55,7 @@ server.get('*', function (req, res) {
     var router = Router.create({location: req.url, routes: routes});
     router.run((Handler) => {
         data.body = React.renderToString(<Handler {...data}/>);
+        data.ugly = __DEV__ ? '.js' : '.min.js';
         var html = template(data);
         res.send(html);
     });
@@ -60,7 +63,6 @@ server.get('*', function (req, res) {
 
 // Load pages from the `/src/content/` folder into the AppStore
 (function () {
-    var assign = require('react/lib/Object.assign');
     var fm = require('front-matter');
     var jade = require('jade');
     var sourceDir = path.join(__dirname, './content');
@@ -77,7 +79,7 @@ server.get('*', function (req, res) {
                 var source = fs.readFileSync(filename, 'utf8');
                 var content = fm(source);
                 var html = jade.render(content.body);
-                var page = assign({}, {path: url, body: html}, content.attributes);
+                var page = Object.assign({}, {path: url, body: html}, content.attributes);
                 Dispatcher.handleServerAction({
                     actionType: ActionTypes.LOAD_PAGE,
                     path: url,

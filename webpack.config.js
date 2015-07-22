@@ -2,6 +2,8 @@
 'use strict';
 
 var _ = require('lodash');
+var glob = require('glob');
+var path = require('path');
 var webpack = require('webpack');
 var argv = require('minimist')(process.argv.slice(2));
 
@@ -28,7 +30,7 @@ var fileLoaderQuery = {
 
 var config = {
     output: {
-        path: './build/',
+        path: DEBUG ? './build-debug/' : './build-release',
         publicPath: './',
         sourcePrefix: '  '
     },
@@ -121,7 +123,13 @@ var appConfig = _.merge({}, config, {
                 new webpack.optimize.UglifyJsPlugin(),
                 new webpack.optimize.AggressiveMergingPlugin()
             ])
-    )
+    ),
+
+    externals: {
+        'react': 'React',
+        'react/addons': 'React'
+    }
+
 });
 
 //
@@ -162,7 +170,6 @@ var serverConfig = _.merge({}, config, {
 // Configuration for testing
 // -----------------------------------------------------------------------------
 
-var glob = require('glob');
 var testConfig = _.merge({}, config, {
     entry: glob.sync('./src/**/__tests__/**.js'),
     output: {
@@ -171,7 +178,32 @@ var testConfig = _.merge({}, config, {
     }
 });
 
+//
+// Debug build
+// -----------------------------------------------------------------------------
+
+
+var componentConfig = (function () {
+    var entry = {};
+    _.forEach(glob.sync('./src/**/components/*/*.js'), function (file) {
+        var filename = path.basename(file, path.extname(file));
+        if (!argv.component || filename.match(argv.component)) {
+            entry[filename] = file
+        }
+    });
+    return _.merge({}, config, {
+        entry: entry,
+        output: {
+            path: './build-components',
+            filename: '[name].js',
+            chunkFilename: '[id].js'
+        }
+    });
+})();
+
+
 module.exports = {
     build: [appConfig, serverConfig],
-    test: testConfig
+    test: testConfig,
+    component: componentConfig
 };

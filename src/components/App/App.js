@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react';
 
 import { RouteHandler } from 'react-router';
 
-import Header from '../Header';
+import Header from '../Header'; //eslint-disable-line no-unused-vars
 import Navbar from '../Navbar';
 
 import AppStore from '../../stores/AppStore.js';
@@ -22,7 +22,7 @@ class App extends React.Component {
             navHeight: 0
         };
 
-        this._appStoreChangeHandler = this._appStoreChangeHandler.bind(this)
+        this._appStoreChangeHandler = this._appStoreChangeHandler.bind(this);
     }
 
     static propTypes = {
@@ -32,6 +32,7 @@ class App extends React.Component {
 
     componentDidMount() {
         AppStore.onChange(this._appStoreChangeHandler);
+        this._appStoreChangeHandler();
     }
 
     componentWillUnmount() {
@@ -64,8 +65,11 @@ class App extends React.Component {
      */
     _appStoreChangeHandler() {
         var totalY = AppStore.getScrollTotal('y');
-        this.state.navHidden && totalY < -80 ? this.setState({navHidden: false}) :
-            !this.state.navHidden && totalY > 120 ? this.setState({navHidden: true}) : null;
+        if (this.state.navHidden && totalY < -80) {
+            this.setState({navHidden: false});
+        } else if (!this.state.navHidden && totalY > 120) {
+            this.setState({navHidden: true});
+        }
 
         var navHeight = React.findDOMNode(this.refs.nav).firstChild.clientHeight;
         if (this.state.navHeight !== navHeight) {

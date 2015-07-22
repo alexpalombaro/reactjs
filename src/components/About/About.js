@@ -1,7 +1,7 @@
 import './About.scss';
 import React from 'react';
 
-import TLDR from '../TLDR'
+import TLDR from '../TLDR'; //eslint-disable-line no-unused-vars
 
 import AppActions from '../../actions/AppActions.js';
 import AppStore from '../../stores/AppStore.js';

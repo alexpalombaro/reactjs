@@ -28,29 +28,37 @@ var AUTOPREFIXER_BROWSERS = [                 // https://github.com/ai/autoprefi
 var src = {};
 var watch = false;
 var browserSync;
+var dir = RELEASE ? 'build-release' : 'build-debug';
 
 //
 // Util
 // -----------------------------------------------------------------------------
 
 // The default task
-gulp.task('default', ['sync']);
+gulp.task('default', function (cb) {
+    runSequence('build:watch', 'serve', 'sync', cb);
+});
 
 // Clean output directory
 gulp.task('clean', del.bind(
-    null, ['.tmp', 'build/*', 'build-test/*'], {dot: true}
+    null, ['.tmp', 'build-*/*', 'build'], {dot: true}
 ));
 
 // 3rd party libraries
 gulp.task('vendor-font', function () {
     return gulp.src('node_modules/bootstrap-sass/assets/fonts/**')
-        .pipe(gulp.dest('build/fonts'));
+        .pipe(gulp.dest(dir + '/fonts'));
 });
 
 gulp.task('vendor-js', function () {
-    return gulp.src(['node_modules/bootstrap-sass/assets/javascripts/bootstrap.min.js',
-        'node_modules/jquery/dist/jquery.min.js'])
-        .pipe(gulp.dest('build/js'));
+    var ugly = function (src) {
+        return src + (RELEASE ? '.min.js' : '.js');
+    };
+    return gulp.src([
+        ugly('node_modules/bootstrap-sass/assets/javascripts/bootstrap'),
+        ugly('node_modules/jquery/dist/jquery'),
+        ugly('node_modules/react/dist/react')
+    ]).pipe(gulp.dest(dir + '/js'));
 });
 
 gulp.task('vendor', ['vendor-font', 'vendor-js']);
@@ -65,8 +73,8 @@ gulp.task('assets', function () {
         'Procfile'
     ];
     return gulp.src(src.assets)
-        .pipe($.changed('build'))
-        .pipe(gulp.dest('build'))
+        .pipe($.changed(dir))
+        .pipe(gulp.dest(dir))
         .pipe($.size({title: 'assets'}));
 });
 
@@ -80,7 +88,7 @@ gulp.task('styles', function () {
         .pipe($.autoprefixer({browsers: AUTOPREFIXER_BROWSERS}))
         .pipe($.csscomb())
         .pipe($.if(RELEASE, $.minifyCss()))
-        .pipe(gulp.dest('build/css'))
+        .pipe(gulp.dest(dir + '/css'))
         .pipe($.size({title: 'styles'}));
 });
 
@@ -128,6 +136,13 @@ gulp.task('bundle:test', function (cb) {
     });
 });
 
+gulp.task('bundle:component', function (cb) {
+    var bundler = webpack(config.component);
+    bundler.run(function (err, stats) {
+        bundleCallback(err, stats, cb);
+    });
+});
+
 //
 // Testing
 // -----------------------------------------------------------------------------
@@ -165,11 +180,11 @@ gulp.task('build:watch', function (cb) {
 // -----------------------------------------------------------------------------
 
 // Launch a Node.js/Express server
-gulp.task('serve', ['build:watch'], function (cb) {
+gulp.task('serve', function (cb) {
     src.server = [
-        'build/server.js',
-        'build/content/**/*',
-        'build/templates/**/*'
+        dir + '/server.js',
+        dir + '/content/**/*',
+        dir + '/templates/**/*'
     ];
 
     var started = false;
@@ -177,7 +192,7 @@ gulp.task('serve', ['build:watch'], function (cb) {
     var assign = require('react/lib/Object.assign');
 
     var server = (function startup() {
-        var child = cp.fork('build/server.js', {
+        var child = cp.fork(dir + '/server.js', {
             env: assign({NODE_ENV: 'development'}, process.env)
         });
         child.once('message', function (message) {
@@ -205,7 +220,7 @@ gulp.task('serve', ['build:watch'], function (cb) {
 });
 
 // Launch BrowserSync development server
-gulp.task('sync', ['serve'], function (cb) {
+gulp.task('sync', function (cb) {
     browserSync = require('browser-sync');
 
     browserSync({
@@ -218,7 +233,7 @@ gulp.task('sync', ['serve'], function (cb) {
         browserSync.exit();
     });
 
-    gulp.watch(['build/**/*.*'].concat(
+    gulp.watch([dir + '/**/*.*'].concat(
         src.server.map(function (file) {
             return '!' + file;
         })

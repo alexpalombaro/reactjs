@@ -1,5 +1,5 @@
 import './TLDR.scss';
-import React from 'react';
+//import React from 'react';
 
 class TLDR {
 

@@ -8,8 +8,12 @@ import EventEmitter from 'eventemitter3';
 
 var CHANGE_EVENT = 'change';
 
-var scrollX = 0, scrollY = 0, scrollTotalX = 0, scrollTotalY = 0;
-var width = 1024, height = 768;
+var scrollX = 0;
+var scrollY = 0;
+var scrollTotalX = 0;
+var scrollTotalY = 0;
+var width = 1024;
+var height = 768;
 var pages = {};
 
 //
@@ -47,7 +51,7 @@ var AppStore = Object.assign({}, EventEmitter.prototype, {
      */
     getScrollTotal(axis) {
         return axis === 'x' ? scrollTotalX :
-            axis === 'y' ? scrollTotalY : {x: scrollTotalX, y: scrollTotalY}
+            axis === 'y' ? scrollTotalY : {x: scrollTotalX, y: scrollTotalY};
     },
 
     /**
