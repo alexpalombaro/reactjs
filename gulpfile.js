@@ -36,7 +36,7 @@ var dir = RELEASE ? 'build-release' : 'build-debug';
 
 // The default task
 gulp.task('default', function (cb) {
-    runSequence('build:watch', 'serve', 'sync', cb);
+    runSequence('build-watch', 'serve', 'sync', cb);
 });
 
 // Clean output directory
@@ -129,14 +129,14 @@ gulp.task('bundle', function (cb) {
 });
 
 // Bundle test
-gulp.task('bundle:test', function (cb) {
+gulp.task('bundle-test', function (cb) {
     var bundler = webpack(config.test);
     bundler.run(function (err, stats) {
         bundleCallback(err, stats, cb);
     });
 });
 
-gulp.task('bundle:component', function (cb) {
+gulp.task('bundle-component', function (cb) {
     var bundler = webpack(config.component);
     bundler.run(function (err, stats) {
         bundleCallback(err, stats, cb);
@@ -146,7 +146,7 @@ gulp.task('bundle:component', function (cb) {
 //
 // Testing
 // -----------------------------------------------------------------------------
-gulp.task('test', ['bundle:test'], function () {
+gulp.task('test', ['bundle-test'], function () {
     var Jasmine = require('jasmine');
     var instance = new Jasmine();
     instance.loadConfig({
@@ -165,8 +165,15 @@ gulp.task('build', ['clean'], function (cb) {
     runSequence(['vendor', 'assets', 'styles', 'bundle'], cb);
 });
 
+gulp.task('build-component', ['clean'], function (cb) {
+    dir = './build-components';
+    runSequence(['vendor', 'assets', 'styles', 'bundle-component'], cb);
+});
+
+
+
 // Build and start watching for modifications
-gulp.task('build:watch', function (cb) {
+gulp.task('build-watch', function (cb) {
     watch = true;
     runSequence('build', function () {
         gulp.watch(src.assets, ['assets']);

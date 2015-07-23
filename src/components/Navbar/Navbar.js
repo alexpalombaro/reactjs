@@ -9,8 +9,8 @@ class Navbar extends React.Component {
 
     static propTypes = {
         hidden: React.PropTypes.bool,
+        fixedToTop: React.PropTypes.bool,
         onResize: React.PropTypes.func
-
     };
 
     //
@@ -39,6 +39,7 @@ class Navbar extends React.Component {
                                       document.activeElement.blur();
                                   }}>
                                 <Logo className={this._resolveLogoClass()}/>
+
                                 <h2>Alessandro Palombaro <span className="subtext">Frontend developer</span></h2>
                             </Link>
                             <button type="button" className="navbar-toggle collapsed" data-toggle="collapse"
@@ -76,8 +77,9 @@ class Navbar extends React.Component {
     }
 
     _resolveNavBarClass() {
-        return classNames('navbar navbar-inverse navbar-fixed-top', {
-            'hidden': this.props.hidden
+        return classNames('navbar navbar-inverse', {
+            'hidden': this.props.hidden,
+            'navbar-fixed-top': this.props.fixedToTop
         });
     }
 }

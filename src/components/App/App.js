@@ -8,6 +8,8 @@ import Navbar from '../Navbar';
 
 import AppStore from '../../stores/AppStore.js';
 
+import _ from 'lodash';
+
 //
 // Component Class
 // -----------------------------------------------------------------------------
@@ -19,7 +21,7 @@ class App extends React.Component {
 
         this.state = {
             navHidden: false,
-            navHeight: 0
+            navFixedToTop: false
         };
 
         this._appStoreChangeHandler = this._appStoreChangeHandler.bind(this);
@@ -39,16 +41,16 @@ class App extends React.Component {
         AppStore.offChange(this._appStoreChangeHandler);
     }
 
-    render() {
-        var styles = {
-            marginTop: (this.state.navHeight + 15) + 'px'
-        };
+    shouldComponentUpdate(props, state) {
+        return !_.matches(this.state, state);
+    }
 
+    render() {
         return (
             <div className="App">
-                <Navbar ref="nav" hidden={this.state.navHidden}/>
+                <Navbar ref="nav" hidden={this.state.navHidden} fixedToTop={this.state.navFixedToTop}/>
 
-                <div className="content" style={styles}>
+                <div className="content">
                     <RouteHandler/>
                 </div>
             </div>
@@ -64,17 +66,13 @@ class App extends React.Component {
      * @private
      */
     _appStoreChangeHandler() {
-        var totalY = AppStore.getScrollTotal('y');
-        if (this.state.navHidden && totalY < -80) {
-            this.setState({navHidden: false});
-        } else if (!this.state.navHidden && totalY > 120) {
-            this.setState({navHidden: true});
+        var navHeight = React.findDOMNode(this.refs.nav).firstChild.clientHeight;
+        if (AppStore.getScroll('y') > navHeight && AppStore.getScrollTotal('y') < -80) {
+            this.setState({navHidden: false, navFixedToTop: true});
+        } else {
+            this.setState({navHidden: false, navFixedToTop: false});
         }
 
-        var navHeight = React.findDOMNode(this.refs.nav).firstChild.clientHeight;
-        if (this.state.navHeight !== navHeight) {
-            this.setState({navHeight});
-        }
     }
 
 }

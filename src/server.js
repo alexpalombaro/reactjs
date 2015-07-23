@@ -1,4 +1,4 @@
-/*global __DEV__ */
+/*global __DEV__*/
 
 import _ from 'lodash';
 import fs from 'fs';
@@ -16,6 +16,10 @@ var server = express();
 server.set('port', (process.env.PORT || 5000));
 server.use(express.static(path.join(__dirname)));
 
+//
+// Server API
+// -----------------------------------------------------------------------------
+
 server.use('/page/:path', function (req, res) {
     var page = AppStore.getPage('/' + req.params.path) || AppStore.getPage('/error');
     res.send({path: req.params.path, page});
@@ -28,6 +32,7 @@ server.use('/data', function (req, res) {
     res.send(data);
 });
 
+
 //
 // Server-side rendering
 // -----------------------------------------------------------------------------
@@ -36,26 +41,27 @@ server.use('/data', function (req, res) {
 var templateFile = path.join(__dirname, 'templates/index.html');
 var template = _.template(fs.readFileSync(templateFile, 'utf8'));
 
+var templateData = {
+    description: '',
+    title: 'Alessandro Palombaro',
+    ugly: __DEV__ ? '.js' : '.min.js',
+    onSetTitle: function (title) {
+        templateData.title = title;
+    },
+    onSetMeta: function (name, content) {
+        templateData[name] = content;
+    }
+};
+
 server.get('*', function (req, res) {
-    var data = {
-        description: '',
-        title: 'Alessandro Palombaro',
-        path: req.path,
-        onSetTitle: function (title) {
-            data.title = title;
-        },
-        onSetMeta: function (name, content) {
-            data[name] = content;
-        },
-        onPageNotFound: function () {
-            res.status(404);
-        }
-    };
+    var data = _.merge({}, templateData, {
+        path: req.path
+    });
 
     var router = Router.create({location: req.url, routes: routes});
     router.run((Handler) => {
         data.body = React.renderToString(<Handler {...data}/>);
-        data.ugly = __DEV__ ? '.js' : '.min.js';
+        data.script = 'app.js';
         var html = template(data);
         res.send(html);
     });

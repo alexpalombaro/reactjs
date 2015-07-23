@@ -188,16 +188,17 @@ var componentConfig = (function () {
     _.forEach(glob.sync('./src/**/components/*/*.js'), function (file) {
         var filename = path.basename(file, path.extname(file));
         if (!argv.component || filename.match(argv.component)) {
-            entry[filename] = file
+            entry[filename] = file;
         }
     });
+
     return _.merge({}, config, {
         entry: entry,
         output: {
-            path: './build-components',
-            filename: '[name].js',
-            chunkFilename: '[id].js'
-        }
+            path: './build-component',
+            filename: '[name].bundle.js'
+        },
+        externals: /^[a-z][a-z\.\-0-9]*$/
     });
 })();
 
